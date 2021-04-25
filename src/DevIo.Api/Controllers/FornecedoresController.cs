@@ -52,7 +52,9 @@ namespace DevIo.Api.Controllers
 
             if (!result) return BadRequest();
 
-            return Ok();
+            var retorno = _mapper.Map<FornecedorDto>(fornecedor);
+            
+            return Ok(retorno);
         }
 
         [HttpPut("{id:guid}")]
@@ -68,7 +70,9 @@ namespace DevIo.Api.Controllers
 
             if (!result) return BadRequest();
 
-            return Ok();
+            var retorno = _mapper.Map<FornecedorDto>(fornecedor);
+            
+            return Ok(retorno);
         }
 
         [HttpDelete("{id:guid}")]
@@ -82,7 +86,7 @@ namespace DevIo.Api.Controllers
 
             if (!result) return BadRequest();
 
-            return Ok();
+            return Ok(fornecedor);
         }
 
         public async Task<FornecedorDto> ObterFornecedorProdutosEndereco(Guid id)
