@@ -33,6 +33,11 @@ namespace DevIo.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            
             services.ResolveDependencies();
         }
 
