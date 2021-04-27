@@ -1,6 +1,5 @@
 using DevIO.Data.Context;
 using DevIo.Api.Configuration;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,12 +30,7 @@ namespace DevIo.Api
 
             services.AddControllers();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.WebApiConfig();
             
             services.ResolveDependencies();
         }
@@ -48,8 +42,10 @@ namespace DevIo.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseRouting();
 
@@ -59,6 +55,8 @@ namespace DevIo.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseMvcConfiguration();
         }
     }
 }

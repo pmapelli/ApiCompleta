@@ -90,7 +90,27 @@ namespace DevIo.Api.Controllers
                 return CustomResponse(produtoDto);
             }
 
+            var produtoAtualizacao = _mapper.Map<Produto>(_produtoRepository.ObterPorId(id));
+
+            produtoDto.Imagem = produtoAtualizacao.Imagem;
+
             if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            if (produtoDto.ImagemUpload != null)
+            {
+                var imagemNome = Guid.NewGuid() + "_" + produtoDto.Imagem;
+                if (!UploadArquivo(produtoDto.ImagemUpload, imagemNome))
+                {
+                    return CustomResponse(produtoDto);
+                }
+
+                produtoAtualizacao.Imagem = imagemNome;
+            }
+
+            produtoAtualizacao.Nome = produtoDto.Nome;
+            produtoAtualizacao.Descricao = produtoDto.Descricao;
+            produtoAtualizacao.Valor = produtoDto.Valor;
+            produtoAtualizacao.Ativo = produtoDto.Ativo;
 
             await _produtoService.Atualizar(_mapper.Map<Produto>(produtoDto));
 
