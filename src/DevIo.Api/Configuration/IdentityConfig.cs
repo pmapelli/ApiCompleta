@@ -14,8 +14,7 @@ namespace DevIo.Api.Configuration
             services.AddDbContext<ApplicationDbContext>(optionsAction: options =>
                 options.UseSqlServer(configuration.GetConnectionString(name: "DefaultConnection")));
 
-            services.AddIdentityCore<IdentityUser>()
-                .AddRoles<IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             

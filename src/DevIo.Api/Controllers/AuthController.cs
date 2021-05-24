@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using DevIo.Api.Dtos;
+using System.Threading.Tasks;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
