@@ -1,15 +1,16 @@
 using System;
+using System.Linq;
 using System.Text;
 using DevIo.Api.Dtos;
 using DevIO.Api.Extensions;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace DevIo.Api.Controllers
 {
@@ -78,7 +79,7 @@ namespace DevIo.Api.Controllers
             return CustomResponse(loginUser);
         }
 
-        private async Task<string> GerarJwt(string email)
+        private async Task<LoginResponseDto> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -111,7 +112,19 @@ namespace DevIo.Api.Controllers
 
             var encodedToken = tokenHandler.WriteToken(token);
 
-            return encodedToken;
+            var response = new LoginResponseDto
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                User = new UserDto
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new ClaimDto { Type = c.Type, Value = c.Value })
+                }
+            };
+
+            return response;
         }
 
         private object ToUnixEpochDate(DateTime date)

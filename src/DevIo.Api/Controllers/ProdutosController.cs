@@ -8,6 +8,7 @@ using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using DevIO.Api.Extensions;
 
 namespace DevIo.Api.Controllers
 {
@@ -42,6 +43,7 @@ namespace DevIo.Api.Controllers
             return produtoDto == null ? NotFound() : produtoDto;
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<ProdutoDto>> Adicionar(ProdutoDto produtoDto)
         {
@@ -60,7 +62,8 @@ namespace DevIo.Api.Controllers
 
             return CustomResponse(produtoDto);
         }
-        
+
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [RequestSizeLimit(40000000)]
         [HttpPost("Adicionar")]
         public async Task<ActionResult<ProdutoDto>> AdicionarArquivoGrande(ProdutoImagemDto produtoDto)
@@ -81,6 +84,7 @@ namespace DevIo.Api.Controllers
             return CustomResponse(produtoDto);
         }
 
+        [ClaimsAuthorize("Produto", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<ProdutoDto>> Atualizar(Guid id, ProdutoDto produtoDto)
         {
@@ -117,6 +121,7 @@ namespace DevIo.Api.Controllers
             return CustomResponse(produtoDto);
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<ProdutoDto>> Excluir(Guid id)
         {

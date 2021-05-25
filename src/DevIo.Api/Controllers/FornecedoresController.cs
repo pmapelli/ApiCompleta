@@ -1,13 +1,13 @@
 ﻿using System;
 using AutoMapper;
 using DevIo.Api.Dtos;
+using DevIO.Api.Extensions;
 using DevIO.Business.Models;
 using System.Threading.Tasks;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using DevIO.Api.Extensions;
 
 namespace DevIo.Api.Controllers
 {
