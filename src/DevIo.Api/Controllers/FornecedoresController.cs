@@ -7,6 +7,7 @@ using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using DevIO.Api.Extensions;
 
 namespace DevIo.Api.Controllers
 {
@@ -29,7 +30,6 @@ namespace DevIo.Api.Controllers
             _fornecedorRepository = fornecedorRepository;            
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<FornecedorDto>> ObterTodos()
         {
@@ -57,7 +57,8 @@ namespace DevIo.Api.Controllers
 
             return enderecoDto;
         }
-        
+
+        [ClaimsAuthorize("Fornecedor", "Atualizar")]
         [HttpPut("atualizar-endereco/{id:guid}")]
         public async Task<ActionResult<EnderecoDto>> AtualizarEndereco(Guid id, EnderecoDto enderecoDto)
         {
@@ -74,6 +75,7 @@ namespace DevIo.Api.Controllers
             return CustomResponse(enderecoDto);
         }
         
+        [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<FornecedorDto>> Adicionar(FornecedorDto fornecedorDto)
         {
@@ -84,6 +86,7 @@ namespace DevIo.Api.Controllers
             return CustomResponse(fornecedorDto);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<FornecedorDto>> Atualizar(Guid id, FornecedorDto fornecedorDto)
         {
@@ -100,6 +103,7 @@ namespace DevIo.Api.Controllers
            return CustomResponse(fornecedorDto);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Excluir")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<FornecedorDto>> Excluir(Guid id)
         {
@@ -112,12 +116,12 @@ namespace DevIo.Api.Controllers
             return CustomResponse();
         }
 
-        public async Task<FornecedorDto> ObterFornecedorProdutosEndereco(Guid id)
+        private async Task<FornecedorDto> ObterFornecedorProdutosEndereco(Guid id)
         {
             return _mapper.Map<FornecedorDto>(await _fornecedorRepository.ObterFornecedorProdutosEndereco(id));
         }
 
-        public async Task<FornecedorDto> ObterFornecedorEndereco(Guid id)
+        private async Task<FornecedorDto> ObterFornecedorEndereco(Guid id)
         {
             return _mapper.Map<FornecedorDto>(await _fornecedorRepository.ObterFornecedorEndereco(id));
         }
