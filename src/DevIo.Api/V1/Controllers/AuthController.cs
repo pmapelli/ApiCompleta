@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using DevIo.Api.Dtos;
 using DevIO.Api.Extensions;
+using DevIo.Api.Controllers;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using DevIO.Business.Intefaces;
@@ -13,9 +14,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 //using Microsoft.AspNetCore.Cors;
 
-namespace DevIo.Api.Controllers
+namespace DevIo.Api.V1.Controllers
 {
-    [Route("api")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}")]
     //[DisableCors]
     public class AuthController : MainController
     {
@@ -24,7 +26,7 @@ namespace DevIo.Api.Controllers
         private readonly AppSettings _appSettings;
 
         public AuthController(INotificador notificador, SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, IOptions<AppSettings> appSettings) : base(notificador)
+            UserManager<IdentityUser> userManager, IOptions<AppSettings> appSettings, IUser user) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -48,7 +50,7 @@ namespace DevIo.Api.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return CustomResponse(await GerarJwt(registerUser.Email)); 
+                return CustomResponse(await GerarJwt(registerUser.Email));
             }
 
             foreach (var error in result.Errors)
@@ -75,7 +77,7 @@ namespace DevIo.Api.Controllers
             {
                 NotificarErro("Usuário temporariamente bloqueado por tentativas inválidas");
             }
-            
+
             NotificarErro("Usuário ou Senha incorretos");
 
             return CustomResponse(loginUser);

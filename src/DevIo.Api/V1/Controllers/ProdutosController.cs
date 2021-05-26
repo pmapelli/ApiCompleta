@@ -2,17 +2,19 @@ using System;
 using System.IO;
 using AutoMapper;
 using DevIo.Api.Dtos;
+using DevIO.Api.Extensions;
 using DevIO.Business.Models;
+using DevIo.Api.Controllers;
 using System.Threading.Tasks;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
-using DevIO.Api.Extensions;
+using System.Collections.Generic;
 
-namespace DevIo.Api.Controllers
+namespace DevIo.Api.V1.Controllers
 {
-    [Route("api/produtos")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produtos")]
     public class ProdutosController : MainController
     {
         private readonly IMapper _mapper;
@@ -57,7 +59,7 @@ namespace DevIo.Api.Controllers
             }
 
             produtoDto.Imagem = imagemNome;
-            
+
             await _produtoService.Adicionar(_mapper.Map<Produto>(produtoDto));
 
             return CustomResponse(produtoDto);
@@ -72,13 +74,13 @@ namespace DevIo.Api.Controllers
 
             var imgPrefixo = Guid.NewGuid() + "_";
 
-            if (! await UploadArquivoGrande(produtoDto.ImagemUpload, imgPrefixo))
+            if (!await UploadArquivoGrande(produtoDto.ImagemUpload, imgPrefixo))
             {
                 return CustomResponse(produtoDto);
             }
 
             produtoDto.Imagem = imgPrefixo + produtoDto.ImagemUpload.FileName;
-            
+
             await _produtoService.Adicionar(_mapper.Map<Produto>(produtoDto));
 
             return CustomResponse(produtoDto);
@@ -154,7 +156,7 @@ namespace DevIo.Api.Controllers
             }
 
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
-            
+
             return true;
         }
 
@@ -165,7 +167,7 @@ namespace DevIo.Api.Controllers
                 NotificarErro("Forneça uma imagem para este produto!");
                 return false;
             }
-            
+
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgPrefixo + arquivo.FileName);
 
             if (System.IO.File.Exists(path))

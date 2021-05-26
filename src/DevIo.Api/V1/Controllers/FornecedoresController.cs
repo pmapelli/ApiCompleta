@@ -2,6 +2,7 @@
 using AutoMapper;
 using DevIo.Api.Dtos;
 using DevIO.Api.Extensions;
+using DevIo.Api.Controllers;
 using DevIO.Business.Models;
 using System.Threading.Tasks;
 using DevIO.Business.Intefaces;
@@ -9,10 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevIo.Api.Controllers
+namespace DevIo.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class FornecedoresController : MainController
     {
         private readonly IMapper _mapper;
@@ -20,14 +22,14 @@ namespace DevIo.Api.Controllers
         private readonly IEnderecoRepository _enderecoRepository;
         private readonly IFornecedorRepository _fornecedorRepository;
 
-        public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper, 
-            IFornecedorService fornecedorService, INotificador notificador, 
+        public FornecedoresController(IFornecedorRepository fornecedorRepository, IMapper mapper,
+            IFornecedorService fornecedorService, INotificador notificador,
             IEnderecoRepository enderecoRepository, IUser user) : base(notificador, user)
         {
             _mapper = mapper;
             _fornecedorService = fornecedorService;
             _enderecoRepository = enderecoRepository;
-            _fornecedorRepository = fornecedorRepository;            
+            _fornecedorRepository = fornecedorRepository;
         }
 
         [HttpGet]
@@ -66,7 +68,7 @@ namespace DevIo.Api.Controllers
             {
                 NotificarErro("O id informado não é o mesmo que foi passado na query.");
                 return CustomResponse(enderecoDto);
-            }                                    
+            }
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -74,7 +76,7 @@ namespace DevIo.Api.Controllers
 
             return CustomResponse(enderecoDto);
         }
-        
+
         [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<FornecedorDto>> Adicionar(FornecedorDto fornecedorDto)
@@ -94,13 +96,13 @@ namespace DevIo.Api.Controllers
             {
                 NotificarErro("O id informado não é o mesmo que foi passado na query.");
                 return CustomResponse(fornecedorDto);
-            }                                    
+            }
 
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-           await _fornecedorService.Atualizar(_mapper.Map<Fornecedor>(fornecedorDto));
+            await _fornecedorService.Atualizar(_mapper.Map<Fornecedor>(fornecedorDto));
 
-           return CustomResponse(fornecedorDto);
+            return CustomResponse(fornecedorDto);
         }
 
         [ClaimsAuthorize("Fornecedor", "Excluir")]

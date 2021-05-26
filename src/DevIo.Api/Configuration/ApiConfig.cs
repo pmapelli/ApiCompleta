@@ -10,17 +10,26 @@ namespace DevIo.Api.Configuration
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+
+            });
+
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddCors(options =>
             {
                 options.AddPolicy("Development",
                     builder => builder.AllowAnyOrigin()
-                                        .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        .AllowCredentials());
-
-                options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
                                         .AllowAnyMethod()
                                         .AllowAnyHeader()
                                         .AllowCredentials());

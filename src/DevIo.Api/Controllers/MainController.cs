@@ -48,10 +48,10 @@ namespace DevIo.Api.Controllers
             {
                 success = false,
                 errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
-                
+
             });
         }
-        
+
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
             if (!modelState.IsValid) NotificarErroModelInvalida(modelState);
@@ -74,5 +74,5 @@ namespace DevIo.Api.Controllers
         {
             _notificador.Handle(new Notificacao(mensagem));
         }
-    }    
+    }
 }
