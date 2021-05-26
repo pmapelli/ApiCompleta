@@ -31,8 +31,7 @@ namespace DevIo.Api.Configuration
                 options.AddPolicy("Development",
                     builder => builder.AllowAnyOrigin()
                                         .AllowAnyMethod()
-                                        .AllowAnyHeader()
-                                        .AllowCredentials());
+                                        .AllowAnyHeader());
 
                 options.AddPolicy("Production",
                     builder => builder.WithMethods("GET", "POST", "PUT", "DELETE")

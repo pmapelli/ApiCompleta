@@ -67,7 +67,7 @@ namespace DevIo.Api.V1.Controllers
 
         [ClaimsAuthorize("Produto", "Adicionar")]
         [RequestSizeLimit(40000000)]
-        [HttpPost("Adicionar")]
+        [HttpPost("AdicionarArquivoGrande")]
         public async Task<ActionResult<ProdutoDto>> AdicionarArquivoGrande(ProdutoImagemDto produtoDto)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
