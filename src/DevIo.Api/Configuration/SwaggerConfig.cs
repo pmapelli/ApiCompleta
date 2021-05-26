@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DevIO.Api.Configuration
+namespace DevIo.Api.Configuration
 {
     public static class SwaggerConfig
     {

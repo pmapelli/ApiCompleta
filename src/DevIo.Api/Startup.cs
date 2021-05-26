@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using DevIO.Api.Configuration;
+using DevIO.Api.Extensions;
 
 namespace DevIo.Api
 {
@@ -38,6 +38,8 @@ namespace DevIo.Api
 
             services.AddSwaggerConfig();
 
+            services.AddLoggingConfiguration(Configuration);
+
             services.ResolveDependencies();
         }
 
@@ -66,9 +68,13 @@ namespace DevIo.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });            
+            });
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseMvcConfiguration();
+
+            app.UseLoggingConfiguration();
         }
     }
 }

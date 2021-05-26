@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="3.11.17" />
+    <PackageReference Include="Elmah.Io.AspNetCore.ExtensionsLogging" Version="3.10.15" />
+    <PackageReference Include="Elmah.Io.AspNetCore.HealthChecks" Version="3.11.17" />
+    <PackageReference Include="Elmah.Io.Extensions.Logging" Version="3.10.15" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />

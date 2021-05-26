@@ -1,7 +1,6 @@
 ﻿using DevIO.Data.Context;
 using DevIO.Api.Extensions;
 using DevIO.Data.Repository;
-using DevIO.Api.Configuration;
 using DevIO.Business.Services;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Http;
