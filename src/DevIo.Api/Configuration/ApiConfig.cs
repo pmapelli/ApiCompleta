@@ -12,7 +12,25 @@ namespace DevIo.Api.Configuration
 
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
             services.AddMvc(option => option.EnableEndpointRouting = false);
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Development",
+                    builder => builder.AllowAnyOrigin()
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader()
+                                        .AllowCredentials());
+
+                options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader()
+                                        .AllowCredentials());
+
+                options.AddPolicy("Production",
+                    builder => builder.WithMethods("GET", "POST", "PUT", "DELETE")
+                                        .WithOrigins("http://site.com")
+                                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                                        .AllowAnyHeader());
+            });
             
             return services;
         }
@@ -30,11 +48,11 @@ namespace DevIo.Api.Configuration
             
             app.UseHttpsRedirection();
             
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+            //app.UseCors(x => x
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    .SetIsOriginAllowed(origin => true) // allow any origin
+            //    .AllowCredentials()); // allow credentials
 
             app.UseMvc();
             

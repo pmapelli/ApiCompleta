@@ -11,10 +11,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+//using Microsoft.AspNetCore.Cors;
 
 namespace DevIo.Api.Controllers
 {
     [Route("api")]
+    //[DisableCors]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
