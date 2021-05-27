@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using DevIO.Api.Extensions;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
 
 namespace DevIo.Api
 {
@@ -29,7 +31,7 @@ namespace DevIo.Api
             });
 
             services.AddIdentityConfiguration(Configuration);
-            
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
@@ -38,7 +40,7 @@ namespace DevIo.Api
 
             services.AddSwaggerConfig();
 
-            services.AddLoggingConfiguration(Configuration);
+            services.AddLoggingConfiguration(Configuration);            
 
             services.ResolveDependencies();
         }
@@ -68,6 +70,13 @@ namespace DevIo.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecksUI();
+
+                endpoints.MapHealthChecks("/api/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
 
             app.UseMiddleware<ExceptionMiddleware>();
